@@ -48,6 +48,7 @@ $total_page = ceil($total_data / $limit);
               <?php if (in_array($role, ['petugas'])): ?>
                 <div class="hero-buttons">
                   <a href="ezparking.php" class="btn btn-primary me-0 me-sm-2 mx-1">Mulai Bekerja</a>
+                  <a href="data_pendaftaran.php" class="btn btn-primary me-0 me-sm-2 mx-1">Kelola Member Baru</a>
                 </div>
               <?php endif; ?>
             </div>
@@ -118,7 +119,7 @@ $total_page = ceil($total_data / $limit);
       </div>
     </section><!-- /Hero Section -->
 
-<?php if (in_array($role, ['owner'])): ?>
+<?php if (in_array($role, ['owner','petugas'])): ?>
       <!-- REKAP Section -->
           <section id="rekap-transaksi" class="about section">
             <?php
@@ -983,7 +984,10 @@ $total_page = ceil($total_data / $limit);
         </div>
     </section>
 <!-- /AREA Section -->
+ <?php endif; ?>
 
+
+ <?php if (in_array($role, ['admin', 'petugas'])): ?>
 <!-- KENDARAAAN Section -->
     <?php
       $limit_kendaraan = 5;
@@ -1349,7 +1353,10 @@ $total_page = ceil($total_data / $limit);
       </div>
     </div>
     <!-- /KENDARAAN Section -->
+ <?php endif; ?>
 
+
+  <?php if (in_array($role, ['admin'])): ?>
     <!-- LOG AKTIVITAS Section -->
     <?php
       include 'config/app.php';
@@ -1375,7 +1382,7 @@ $total_page = ceil($total_data / $limit);
       ");
     ?>
 
-  <section id="log-aktivitas" class="about section">
+<section id="log-aktivitas" class="about section">
   <div class="container mt-4">
 
     <div class="container section-title" data-aos="fade-up">
@@ -1452,8 +1459,8 @@ $total_page = ceil($total_data / $limit);
   </div>
 </section>
 <!-- /LOG AKTIVITAS Section -->
-<?php endif; ?>
 
+ <?php endif; ?>
 </main>
 
 

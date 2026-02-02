@@ -936,5 +936,3 @@ if (!function_exists('get_log_aktivitas')) {
         return $logs;
     }
 }
-
-

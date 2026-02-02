@@ -62,16 +62,20 @@ $logs = get_log_aktivitas();
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="#hero" class="active">Home</a></li>
-          <?php if (in_array($role, ['owner'])): ?>
+          <?php if (in_array($role, ['owner','petugas'])): ?>
           <li><a href="#rekap-transaksi">Rekap Transaksi</a></li>
           <?php endif; ?>
           <?php if (in_array($role, ['admin'])): ?>
           <li><a href="#data-users">Data Users</a></li>
           <li><a href="#tarif">Tarif</a></li>
           <li><a href="#area">Area Parkir</a></li>
-          <li><a href="#kendaraan">Daftar Member Kendaraan</a></li>
-          <li><a href="#log-aktivitas">Aktivitas</a></li>
           <?php endif; ?>
+          <?php if (in_array($role, ['petugas', 'admin'])): ?>
+          <li><a href="#kendaraan">Daftar Member Kendaraan</a></li>
+          <?php endif; ?>
+          <?php if (in_array($role, ['admin'])): ?>
+          <li><a href="#log-aktivitas">Aktivitas</a></li>
+           <?php endif; ?>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

@@ -100,6 +100,14 @@ if (isset($_SESSION['login'])) {
       </div>
 
       <button type="submit" name="login" class="btn btn-primary w-100">Masuk</button>
+      <div class="row mt-3">
+        <div class="col-6">
+          <a href="join_member.php" class="btn btn-primary w-100">Join Member</a>
+        </div>
+        <div class="col-6">
+          <a href="cek_status.php" class="btn btn-primary w-100">Cek Status</a>
+        </div>
+      </div>
     </form>
 
 
