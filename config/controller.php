@@ -1,6 +1,6 @@
 <?php
 // ==================================================
-// HELPER GLOBAL (WAJIB DI PALING ATAS)
+// HELPER GLOBAL
 // ==================================================
 
 if (!function_exists('log_aktivitas')) {
@@ -189,7 +189,7 @@ if (!function_exists('count_rekap_transaksi')) {
 
 
 // ===============================
-// DATA STATISTIK DASHBOARD (AMAN)
+// DATA STATISTIK DASHBOARD
 // ===============================
 if (!function_exists('get_dashboard_stats')) {
     function get_dashboard_stats()
@@ -291,7 +291,7 @@ if (!function_exists('get_user_by_id')) {
 }
 
 // ===============================
-// PROSES TAMBAH USER (MODAL)
+// PROSES TAMBAH USER
 // ===============================
 if (isset($_POST['tambah_user'])) {
     global $koneksi;
@@ -326,7 +326,7 @@ if (isset($_POST['tambah_user'])) {
 
 
 // ===============================
-// PROSES UPDATE USER (MODAL)
+// PROSES UPDATE USER
 // ===============================
 if (isset($_POST['update_user'])) {
     global $koneksi;
@@ -354,7 +354,7 @@ if (isset($_POST['update_user'])) {
 
 
 // ===============================
-// PROSES HAPUS USER (MODAL)
+// PROSES HAPUS USER
 // ===============================
 if (isset($_POST['hapus_user'])) {
     global $koneksi;
@@ -418,7 +418,7 @@ if (!function_exists('get_tarif_by_id')) {
 
 
 // ===============================
-// PROSES TAMBAH TARIF (MODAL)
+// PROSES TAMBAH TARIF
 // ===============================
 if (isset($_POST['tambah_tarif'])) {
     global $koneksi;
@@ -520,7 +520,7 @@ if (isset($_POST['hapus_tarif'])) {
 
 
 // ===============================
-// AMBIL SEMUA AREA PARKIR (DIKELOMPOKKAN)
+// AMBIL SEMUA AREA PARKIR
 // ===============================
 if (!function_exists('get_all_area_parkir_grouped')) {
     function get_all_area_parkir_grouped()
@@ -640,7 +640,7 @@ if (isset($_POST['update_area'])) {
         exit;
     }
 
-    // Cegah duplikat nama area (kecuali dirinya sendiri)
+    // Cegah duplikat nama area
     $cek = mysqli_query($koneksi, "
         SELECT id_area 
         FROM tb_area_parkir 
