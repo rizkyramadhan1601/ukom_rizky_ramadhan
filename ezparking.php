@@ -25,7 +25,7 @@
               Arahkan QR Code ke kamera hingga terbaca otomatis
             </div>
             <div class="border rounded-3 p-2 bg-light d-inline-block">
-              <div id="reader" style="width:280px;"></div>
+              <div id="reader" style="width:100%; max-width:280px;"></div>
             </div>
             <form method="POST" action="proses_scan.php" id="formScan">
               <input type="hidden" name="kode_member" id="kode_member">
@@ -40,34 +40,143 @@
   </div>
 </section>
 
+<style>
+@media (max-width: 576px) {
+    #reader {
+        max-width: 260px !important;
+    }
+}
+
+@media (max-width: 390px) {
+    #reader {
+        max-width: 240px !important;
+    }
+}
+
+#reader__dashboard_section {
+    padding-top: 10px !important;
+}
+
+#reader__dashboard_section_csr button {
+    margin: 5px !important;
+}
+</style>
+
 <!-- LIBRARY SCANNER -->
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <script>
+let isProcessing = false; // Mencegah double scan
+let html5QrcodeScanner = null;
+
 function onScanSuccess(decodedText) {
+    // Cegah Double Scan
+    if (isProcessing) {
+        console.log('Already processing, ignoring...');
+        return;
+    }
+    
+    console.log('QR Code detected:', decodedText);
+    isProcessing = true;
+    
+    // Set kode member
     document.getElementById('kode_member').value = decodedText;
 
-    // stop kamera biar tidak double scan
-    html5QrcodeScanner.clear();
-
-    // submit otomatis
-    document.getElementById('formScan').submit();
+    // Scan Delay Menghindari Double Scan
+    html5QrcodeScanner.clear()
+        .then(() => {
+            console.log('Scanner stopped successfully');
+            setTimeout(() => {
+                document.getElementById('formScan').submit();
+            }, 300);
+        })
+        .catch(err => {
+            console.error('Error stopping scanner:', err);
+            document.getElementById('formScan').submit();
+        });
 }
 
 function onScanFailure(error) {
-    // scanner tetap berjalan
 }
 
-let html5QrcodeScanner = new Html5QrcodeScanner(
-    "reader",
-    {
-        fps: 10,
-        qrbox: { width: 220, height: 220 }
-    },
-    false
-);
+function initializeScanner() {
+    
+    const readerElement = document.getElementById('reader');
+    const readerWidth = readerElement.offsetWidth || 280;
+    
+    // UKURAN BOX SCAN
+    const qrboxSize = Math.min(Math.floor(readerWidth * 0.8), 250);
+    
+    console.log('Initializing scanner with QR box size:', qrboxSize);
+    
+    html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader",
+        {
+            fps: 15,                    // FPS UNTUK SCANNING
+            qrbox: { 
+                width: qrboxSize, 
+                height: qrboxSize 
+            },
+            aspectRatio: 1.0,         
+            disableFlip: false,         
+            showTorchButtonIfSupported: true, 
+            rememberLastUsedCamera: true,    
+        },
+        false 
+    );
 
-html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, initializing scanner...');
+    
+    
+    setTimeout(() => {
+        initializeScanner();
+    }, 100);
+});
+
+
+let resizeTimeout;
+window.addEventListener('resize', function() {
+    if (isProcessing) {
+        return; 
+    }
+    
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+        console.log('Window resized, reinitializing scanner...');
+        
+        if (html5QrcodeScanner) {
+            html5QrcodeScanner.clear()
+                .then(() => {
+                    initializeScanner();
+                })
+                .catch(err => {
+                    console.error('Error during resize reinitialization:', err);
+                    
+                    initializeScanner();
+                });
+        }
+    }, 500); 
+});
+
+
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        console.log('Page hidden, pausing scanner...');
+        if (html5QrcodeScanner && !isProcessing) {
+            html5QrcodeScanner.pause();
+        }
+    } else {
+        console.log('Page visible, resuming scanner...');
+        if (html5QrcodeScanner && !isProcessing) {
+            html5QrcodeScanner.resume();
+        }
+    }
+});
 </script>
 
 <?php include 'layout/footer.php'; ?>
