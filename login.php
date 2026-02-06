@@ -435,8 +435,7 @@ if (isset($_SESSION['login'])) {
             <div class="row g-2">
                 <div class="col-6">
                     <a href="join_member.php" class="btn btn-primary w-100">
-                        <i class="fas fa-user-plus"></i>
-                        Join Member
+                        <i class="fas fa-user-plus"></i>Join Member
                     </a>
                 </div>
                 <div class="col-6">

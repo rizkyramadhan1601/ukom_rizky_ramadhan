@@ -47,8 +47,8 @@ $total_page = ceil($total_data / $limit);
               </p>
               <?php if (in_array($role, ['petugas'])): ?>
                 <div class="hero-buttons">
-                  <a href="ezparking.php" class="btn btn-primary me-0 me-sm-2 mx-1">Mulai Bekerja</a>
-                  <a href="data_pendaftaran.php" class="btn btn-primary me-0 me-sm-2 mx-1">Kelola Member Baru</a>
+                  <a href="ezparking.php" class="btn btn-primary m-2 me-0 me-sm-2 mx-1">Mulai Bekerja</a>
+                  <a href="data_pendaftaran.php" class="btn btn-primary m-2 me-0 me-sm-2 mx-1">Kelola Member Baru</a>
                 </div>
               <?php endif; ?>
             </div>
@@ -358,14 +358,14 @@ $total_page = ceil($total_data / $limit);
                                               data-username="<?= $user['username'] ?>"
                                               data-role="<?= $user['role'] ?>"
                                               data-status="<?= $user['status_aktif'] ?>">
-                                          <i class="bi bi-pencil"></i> Edit
+                                          <i class="bi bi-pencil"></i>
                                       </button>
 
                                       <button class="btn btn-sm btn-outline-danger rounded-pill m-1"
                                               data-bs-toggle="modal"
                                               data-bs-target="#modalHapusUser"
                                               data-id="<?= $user['id_user'] ?>">
-                                         <i class="bi bi-trash"></i> Hapus
+                                         <i class="bi bi-trash"></i>
                                       </button>
                                     </td>
                                 </tr>
@@ -570,7 +570,7 @@ $total_page = ceil($total_data / $limit);
                                                 data-id="<?= $tarif['id_tarif'] ?>"
                                                 data-jenis="<?= $tarif['jenis_kendaraan'] ?>"
                                                 data-tarif="<?= $tarif['tarif_per_jam'] ?>">
-                                            <i class="bi bi-pencil"></i> Edit
+                                            <i class="bi bi-pencil"></i>
                                         </button>
 
                                         <button class="btn btn-sm btn-outline-danger rounded-pill m-1"
@@ -578,7 +578,7 @@ $total_page = ceil($total_data / $limit);
                                                 data-bs-target="#modalHapusTarif"
                                                 data-id="<?= $tarif['id_tarif'] ?>"
                                                 data-jenis="<?= $tarif['jenis_kendaraan'] ?>">
-                                            <i class="bi bi-trash"></i> Hapus
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -814,7 +814,7 @@ $total_page = ceil($total_data / $limit);
                                                     data-id="<?= $area['id_area'] ?>"
                                                     data-nama="<?= $area['nama_area'] ?>"
                                                     data-kapasitas="<?= $area['kapasitas'] ?>">
-                                                <i class="bi bi-pencil"></i> Edit
+                                                <i class="bi bi-pencil"></i>
                                             </button>
 
                                             <button class="btn btn-sm btn-outline-danger rounded-pill m-1"
@@ -822,7 +822,7 @@ $total_page = ceil($total_data / $limit);
                                                     data-bs-target="#modalHapusArea"
                                                     data-id="<?= $area['id_area'] ?>"
                                                     data-nama="<?= $area['nama_area'] ?>">
-                                                <i class="bi bi-trash"></i> Hapus
+                                                <i class="bi bi-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -1097,7 +1097,7 @@ $total_page = ceil($total_data / $limit);
                         data-jenis="<?= $kendaraan['jenis_kendaraan'] ?>"
                         data-warna="<?= $kendaraan['warna'] ?>"
                         data-pemilik="<?= $kendaraan['pemilik'] ?>">
-                    <i class="bi bi-pencil"></i> Edit
+                    <i class="bi bi-pencil"></i>
                 </button>
 
                 <button class="btn btn-sm btn-outline-danger rounded-pill m-1"
@@ -1105,7 +1105,7 @@ $total_page = ceil($total_data / $limit);
                         data-bs-target="#modalHapusKendaraan"
                         data-id="<?= $kendaraan['id_kendaraan'] ?>"
                         data-plat="<?= $kendaraan['plat_nomor'] ?>">
-                    <i class="bi bi-trash"></i> Hapus
+                    <i class="bi bi-trash"></i>
                 </button>
               </td>
 

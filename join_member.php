@@ -430,9 +430,9 @@
                                         class="form-select"
                                         required>
                                     <option value="">-- Pilih Jenis Kendaraan --</option>
-                                    <option value="motor">🏍️ Motor</option>
-                                    <option value="mobil">🚗 Mobil</option>
-                                    <option value="lainnya">🚙 Lainnya</option>
+                                    <option value="motor"> Motor</option>
+                                    <option value="mobil"> Mobil</option>
+                                    <option value="lainnya"> Lainnya</option>
                                 </select>
                             </div>
 
