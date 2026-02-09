@@ -45,9 +45,11 @@ $total_page = ceil($total_data / $limit);
               <p class="mb-4 mb-md-5">
                 Aplikasi Website yang Dirancang Untuk Memudahkan Pengelolaan Parkir Kendaraan pada Berbagai Jenis Tempat Parkir dengan Sistem yang Cepat dan Aman.
               </p>
-              <?php if (in_array($role, ['petugas'])): ?>
+              <?php if (in_array($role, ['petugas', 'admin'])): ?>
                 <div class="hero-buttons">
+                  <?php if (in_array($role, ['petugas'])): ?>
                   <a href="ezparking.php" class="btn btn-primary m-2 me-0 me-sm-2 mx-1">Mulai Bekerja</a>
+                  <?php endif; ?>
                   <a href="data_pendaftaran.php" class="btn btn-primary m-2 me-0 me-sm-2 mx-1">Kelola Member Baru</a>
                 </div>
               <?php endif; ?>
