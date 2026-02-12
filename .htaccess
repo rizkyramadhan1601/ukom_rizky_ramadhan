@@ -1,0 +1,112 @@
+# =============================================
+# EZPARKING - .htaccess Configuration
+# =============================================
+
+# 1. SECURITY: Menyembunyikan list file/direktori
+Options -Indexes
+
+# 2. SECURITY: Menyembunyikan server signature
+ServerSignature Off
+
+# 3. SECURITY: Melindungi file penting
+<FilesMatch "^(config|\.htaccess|\.env)">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# 4. SECURITY: Mencegah akses langsung ke folder config
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^config/ - [F,L]
+</IfModule>
+
+# 5. URL REWRITING: Menghilangkan ekstensi .php
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Jangan rewrite jika file/folder benar-benar ada
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    
+    # Tambahkan .php secara otomatis
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.*)$ $1.php [L,QSA]
+    
+    # Redirect dari .php ke tanpa ekstensi (opsional)
+    # RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.php [NC]
+    # RewriteRule ^ %1 [R=301,L]
+</IfModule>
+
+# 6. PERFORMANCE: Kompresi GZIP
+<IfModule mod_deflate.c>
+    # Compress HTML, CSS, JavaScript, Text, XML
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/json
+    
+    # Compress fonts
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/opentype
+    
+    # Don't compress images
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|ico)$ no-gzip
+</IfModule>
+
+# 7. PERFORMANCE: Browser Caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # CSS and JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # Fonts
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    
+    # HTML
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+# 8. SECURITY: Prevent clickjacking
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# 9. ERROR PAGES (opsional)
+# ErrorDocument 404 /error/404.php
+# ErrorDocument 403 /error/403.php
+# ErrorDocument 500 /error/500.php
+
+# 10. CHARSET
+AddDefaultCharset UTF-8
+
+# 11. DISABLE ETAG (opsional - untuk performance)
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None

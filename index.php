@@ -1,5 +1,5 @@
   <?php
-  require_once 'config/controller.php';
+ include 'config/controller.php';
   include 'layout/header.php';
 
   $tanggal_awal  = $_GET['tanggal_awal'] ?? null;
@@ -121,7 +121,7 @@
         </div>
       </section><!-- /Hero Section -->
 
-  <?php if (in_array($role, ['owner','petugas'])): ?>
+  <<?php if (in_array($role, ['owner','petugas'])): ?>
         <!-- REKAP Section -->
             <section id="rekap-transaksi" class="about section">
               <?php
@@ -160,10 +160,11 @@
             <h2>Rekap Transaksi</h2>
             <p>Data transaksi parkir berdasarkan rentang waktu</p>
           </div>
+          
           <?php if ($tanggal_awal && $tanggal_akhir): ?>
             <div class="text-center mb-3">
               <span class="badge bg-primary bg-opacity-10 text-primary">
-                Periode: <?= $tanggal_awal ?> s/d <?= $tanggal_akhir ?>
+                Periode: <?= date('d-m-Y', strtotime($tanggal_awal)) ?> s/d <?= date('d-m-Y', strtotime($tanggal_akhir)) ?>
               </span>
             </div>
           <?php endif; ?>
@@ -173,24 +174,38 @@
             <div class="card-body">
               <form method="GET" class="row g-3 align-items-end">
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <label class="form-label">Dari Tanggal</label>
                   <input type="date" name="tanggal_awal"
                         class="form-control"
-                        value="<?= $_GET['tanggal_awal'] ?? '' ?>">
+                        value="<?= $_GET['tanggal_awal'] ?? '' ?>"
+                        required>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <label class="form-label">Sampai Tanggal</label>
                   <input type="date" name="tanggal_akhir"
                         class="form-control"
-                        value="<?= $_GET['tanggal_akhir'] ?? '' ?>">
+                        value="<?= $_GET['tanggal_akhir'] ?? '' ?>"
+                        required>
                 </div>
 
-                <div class="col-md-4">
-                  <button type="submit" class="btn btn-primary rounded-pill w-100">
+                <div class="col-md-6">
+                  <button type="submit" class="btn btn-primary me-2">
                     <i class="bi bi-search"></i> Tampilkan
                   </button>
+                  
+                  <?php if (!empty($tanggal_awal) && !empty($tanggal_akhir)): ?>
+                    <a href="download_rekap_transaksi.php?tanggal_awal=<?= $tanggal_awal ?>&tanggal_akhir=<?= $tanggal_akhir ?>" 
+                       class="btn btn-danger" 
+                       target="_blank">
+                      <i class="bi bi-file-earmark-pdf"></i> Download PDF
+                    </a>
+                    
+                    <a href="?" class="btn btn-secondary">
+                      <i class="bi bi-arrow-counterclockwise"></i> Reset
+                    </a>
+                  <?php endif; ?>
                 </div>
 
               </form>
@@ -216,19 +231,19 @@
 
                 <tbody>
                 <?php if (!empty($transaksis)) : ?>
-                    <?php $no = 1; ?>
+                    <?php $no = $offset_rekap + 1; ?>
                     <?php foreach ($transaksis as $trx) : ?>
                       <tr class="text-center">
                         <td><?= $no++ ?></td>
-                        <td><?= $trx['kode_member'] ?></td>
-                        <td><?= $trx['plat_nomor'] ?></td>
+                        <td><?= htmlspecialchars($trx['kode_member']) ?></td>
+                        <td><?= htmlspecialchars($trx['plat_nomor']) ?></td>
                         <td>
                           <span class="badge bg-info bg-opacity-10 text-info">
                             <?= ucfirst($trx['jenis_kendaraan']) ?>
                           </span>
                         </td>
-                        <td><?= $trx['waktu_masuk'] ?></td>
-                        <td><?= $trx['waktu_keluar'] ?></td>
+                        <td><?= date('d-m-Y H:i', strtotime($trx['waktu_masuk'])) ?></td>
+                        <td><?= date('d-m-Y H:i', strtotime($trx['waktu_keluar'])) ?></td>
                         <td><?= $trx['durasi_jam'] ?></td>
                         <td>
                           <strong>
@@ -237,6 +252,25 @@
                         </td>
                       </tr>
                     <?php endforeach; ?>
+                    
+                    <!-- Total -->
+                    <?php if (!empty($tanggal_awal) && !empty($tanggal_akhir)): ?>
+                      <?php
+                        // Hitung total pendapatan
+                        $total_pendapatan = 0;
+                        $all_transaksi = get_rekap_transaksi($tanggal_awal, $tanggal_akhir, 999999, 0);
+                        foreach ($all_transaksi as $t) {
+                          $total_pendapatan += $t['biaya_total'];
+                        }
+                      ?>
+                      <tr class="table-info fw-bold">
+                        <td colspan="7" class="text-end">TOTAL PENDAPATAN:</td>
+                        <td class="text-center">
+                          Rp <?= number_format($total_pendapatan, 0, ',', '.') ?>
+                        </td>
+                      </tr>
+                    <?php endif; ?>
+                    
                 <?php else : ?>
                     <tr>
                       <td colspan="8" class="text-center text-muted">
@@ -257,7 +291,7 @@
                     <a class="page-link"
                       href="?<?= http_build_query(array_merge($_GET, [
                           'page_rekap' => $page_rekap - 1
-                      ])) ?>">
+                      ])) ?>#rekap-transaksi">
                       &laquo;
                     </a>
                   </li>
@@ -268,7 +302,7 @@
                       <a class="page-link"
                         href="?<?= http_build_query(array_merge($_GET, [
                             'page_rekap' => $i
-                        ])) ?>">
+                        ])) ?>#rekap-transaksi">
                         <?= $i ?>
                       </a>
                     </li>
@@ -279,7 +313,7 @@
                     <a class="page-link"
                       href="?<?= http_build_query(array_merge($_GET, [
                           'page_rekap' => $page_rekap + 1
-                      ])) ?>">
+                      ])) ?>#rekap-transaksi">
                       &raquo;
                     </a>
                   </li>
